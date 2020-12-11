@@ -2,12 +2,27 @@
 
 from flask import Flask, render_template
 
+
+class Game:
+
+    def __init__(self, name, category, console):
+        self.name = name
+        self.category = category
+        self.console = console
+
+    def __str__(self):
+        return f"Name -> {self.name} - Category -> {self.category} - Console -> {self.console}"
+
+
 app = Flask(__name__)
 
 
 @app.route("/initial")
 def hello():
-    games = ['Tretris', 'Super Mario', 'Pokemon Gold']
+    game1 = Game('Super Mario', 'Action', 'SNT')
+    game2 = Game('Pokemon Gold', 'RPG', 'GBA')
+    games = [game1, game2]
+
     return render_template("games.html", title="Games", games=games)
 
 
