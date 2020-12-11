@@ -22,14 +22,13 @@ games = [game1, game2]
 app = Flask(__name__)
 
 
-@app.route('/initial')
-def hello():
+@app.route('/')
+def index():
     return render_template("games.html", title=page_title, games=games)
 
 
 @app.route('/new')
 def new_game():
-    title = 'Games'
     return render_template('new_game.html', title=page_title)
 
 
@@ -48,4 +47,4 @@ def create_game():
     If necessary we can define host and port for our server.
     e.g app.run(host="127.0.0.1", port=5001)
 """
-app.run()
+app.run(debug=True)
