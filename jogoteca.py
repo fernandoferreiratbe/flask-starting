@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route("/initial")
 def hello():
-    return render_template("games.html", title="Games")
+    games = ['Tretris', 'Super Mario', 'Pokemon Gold']
+    return render_template("games.html", title="Games", games=games)
 
 
 """
