@@ -1,15 +1,18 @@
 # _*_ encoding: utf-8 _*_
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route("/initial")
 def hello():
-    """ This is just a simple sample! Never mix HTML at this part of your code. """
-    return "<h1>Hello from Flask App!"
+    return render_template("games.html")
 
 
+"""
+    If necessary we can define host and port for our server.
+    e.g app.run(host="127.0.0.1", port=5001)
+"""
 app.run()
 
