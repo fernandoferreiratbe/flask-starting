@@ -17,13 +17,19 @@ class Game:
 app = Flask(__name__)
 
 
-@app.route("/initial")
+@app.route('/initial')
 def hello():
     game1 = Game('Super Mario', 'Action', 'SNT')
     game2 = Game('Pokemon Gold', 'RPG', 'GBA')
     games = [game1, game2]
 
     return render_template("games.html", title="Games", games=games)
+
+
+@app.route('/new')
+def create_new_game():
+    title = 'Games'
+    return render_template('new_game.html', title=title)
 
 
 """
