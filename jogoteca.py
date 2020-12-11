@@ -1,6 +1,6 @@
 # _*_ encoding: utf-8 _*_
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 
 class Game:
@@ -40,7 +40,7 @@ def create_game():
 
     games.append(Game(name, category, console))
 
-    return render_template('games.html', title=page_title, games=games)
+    return redirect('/')
 
 
 """
