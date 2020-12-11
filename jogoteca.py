@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/initial")
 def hello():
-    return render_template("games.html")
+    return render_template("games.html", title="Games")
 
 
 """
