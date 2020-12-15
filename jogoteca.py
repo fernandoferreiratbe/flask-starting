@@ -11,7 +11,9 @@ class Game:
         self.console = console
 
     def __str__(self):
-        return f"Name -> {self.name} - Category -> {self.category} - Console -> {self.console}"
+        return f"Name -> {self.name} - " \
+               f"Category -> {self.category} - " \
+               f"Console -> {self.console}"
 
 
 page_title = "Games"
@@ -31,6 +33,9 @@ def index():
 
 @app.route('/new')
 def new_game():
+    if 'logged_user' not in session or session['logged_user'] is None:
+        return redirect('/login')
+
     return render_template('new_game.html', title=page_title)
 
 
@@ -60,6 +65,13 @@ def authenticate():
 
     flash('Not possible to perform login. Check your credentials.')
     return redirect('/login')
+
+
+@app.route('/logout')
+def logout():
+    session['logged_user'] = None
+    flash('No user logged.')
+    return redirect('/')
 
 
 """
