@@ -1,6 +1,6 @@
 # _*_ encoding: utf-8 _*_
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, flash
 
 
 class Game:
@@ -20,6 +20,8 @@ game2 = Game('Pokemon Gold', 'RPG', 'GBA')
 games = [game1, game2]
 
 app = Flask(__name__)
+""" This is a sample web app. Never, never define secrete key in your source code... """
+app.secret_key = "xvZkad019002863kajdh3hflskjgadçjeubdk"
 
 
 @app.route('/')
@@ -51,8 +53,12 @@ def login():
 @app.route('/authenticate', methods=['POST', ])
 def authenticate():
     if "master" == request.form['password']:
+        print(f"Logged user -> {request.form['user']}")
+        session['logged_user'] = request.form['user']
+        flash(f'{request.form["user"]} logged successfully.')
         return redirect('/')
 
+    flash('Not possible to perform login. Check your credentials.')
     return redirect('/login')
 
 
