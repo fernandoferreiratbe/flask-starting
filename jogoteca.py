@@ -34,7 +34,7 @@ def index():
 @app.route('/new')
 def new_game():
     if 'logged_user' not in session or session['logged_user'] is None:
-        return redirect('/login')
+        return redirect('/login?next_page=new')
 
     return render_template('new_game.html', title=page_title)
 
@@ -52,7 +52,8 @@ def create_game():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    next_page = request.args.get('next_page')
+    return render_template('login.html', next_page=next_page)
 
 
 @app.route('/authenticate', methods=['POST', ])
@@ -61,7 +62,9 @@ def authenticate():
         print(f"Logged user -> {request.form['user']}")
         session['logged_user'] = request.form['user']
         flash(f'{request.form["user"]} logged successfully.')
-        return redirect('/')
+        next_page = request.form['next_page']
+
+        return redirect('/{}'.format(next_page))
 
     flash('Not possible to perform login. Check your credentials.')
     return redirect('/login')
