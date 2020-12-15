@@ -43,6 +43,19 @@ def create_game():
     return redirect('/')
 
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/authenticate', methods=['POST', ])
+def authenticate():
+    if "master" == request.form['password']:
+        return redirect('/')
+
+    return redirect('/login')
+
+
 """
     If necessary we can define host and port for our server.
     e.g app.run(host="127.0.0.1", port=5001)
