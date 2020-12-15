@@ -1,6 +1,6 @@
 # _*_ encoding: utf-8 _*_
 
-from flask import Flask, render_template, request, redirect, session, flash
+from flask import Flask, render_template, request, redirect, session, flash, url_for
 
 
 class Game:
@@ -34,7 +34,7 @@ def index():
 @app.route('/new')
 def new_game():
     if 'logged_user' not in session or session['logged_user'] is None:
-        return redirect('/login?next_page=new')
+        return redirect(url_for('login', next_page=url_for('new_game')))
 
     return render_template('new_game.html', title=page_title)
 
@@ -47,7 +47,7 @@ def create_game():
 
     games.append(Game(name, category, console))
 
-    return redirect('/')
+    return redirect(url_for('index'))
 
 
 @app.route('/login')
@@ -64,17 +64,17 @@ def authenticate():
         flash(f'{request.form["user"]} logged successfully.')
         next_page = request.form['next_page']
 
-        return redirect('/{}'.format(next_page))
+        return redirect(next_page)
 
     flash('Not possible to perform login. Check your credentials.')
-    return redirect('/login')
+    return redirect(url_for('login'))
 
 
 @app.route('/logout')
 def logout():
     session['logged_user'] = None
     flash('No user logged.')
-    return redirect('/')
+    return redirect(url_for('index'))
 
 
 """
