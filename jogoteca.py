@@ -16,6 +16,20 @@ class Game:
                f"Console -> {self.console}"
 
 
+class User:
+
+    def __init__(self, user_id, name, password):
+        self.user_id = user_id
+        self.name = name
+        self.password = password
+
+
+lewis = User('lewis', 'Lewis Hamilton', '444444')
+charles = User('charles', 'Charles Leclerc', '333333', )
+daniel = User('daniel', 'Daniel Ricciardo', '101010')
+
+users = {lewis.user_id: lewis, charles.user_id: charles, daniel.user_id: daniel}
+
 page_title = "Games"
 game1 = Game('Super Mario', 'Action', 'SNT')
 game2 = Game('Pokemon Gold', 'RPG', 'GBA')
@@ -58,13 +72,15 @@ def login():
 
 @app.route('/authenticate', methods=['POST', ])
 def authenticate():
-    if "master" == request.form['password']:
-        print(f"Logged user -> {request.form['user']}")
-        session['logged_user'] = request.form['user']
-        flash(f'{request.form["user"]} logged successfully.')
-        next_page = request.form['next_page']
 
-        return redirect(next_page)
+    if request.form['user'] in users:
+        user = users[request.form['user']]
+        if user.password == request.form['password']:
+            session['logged_user'] = user.user_id
+            flash(f'{user.name} logged successfully.')
+            next_page = request.form['next_page']
+
+            return redirect(next_page)
 
     flash('Not possible to perform login. Check your credentials.')
     return redirect(url_for('login'))
