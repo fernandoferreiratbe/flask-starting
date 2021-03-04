@@ -12,15 +12,15 @@ criar_tabelas = '''SET NAMES utf8;
     USE `jogoteca`;
     CREATE TABLE `jogo` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
-      `nome` varchar(50) COLLATE utf8_bin NOT NULL,
-      `categoria` varchar(40) COLLATE utf8_bin NOT NULL,
+      `name` varchar(50) COLLATE utf8_bin NOT NULL,
+      `category` varchar(40) COLLATE utf8_bin NOT NULL,
       `console` varchar(20) NOT NULL,
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
     CREATE TABLE `usuario` (
       `id` varchar(8) COLLATE utf8_bin NOT NULL,
-      `nome` varchar(20) COLLATE utf8_bin NOT NULL,
-      `senha` varchar(8) COLLATE utf8_bin NOT NULL,
+      `name` varchar(20) COLLATE utf8_bin NOT NULL,
+      `password` varchar(8) COLLATE utf8_bin NOT NULL,
       PRIMARY KEY (`id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;'''
 
@@ -29,7 +29,7 @@ conn.cursor().execute(criar_tabelas)
 # inserindo usuarios
 cursor = conn.cursor()
 cursor.executemany(
-      'INSERT INTO jogoteca.usuario (id, nome, senha) VALUES (%s, %s, %s)',
+      'INSERT INTO jogoteca.usuario (id, name, password) VALUES (%s, %s, %s)',
       [
             ('luan', 'Luan Marques', 'flask'),
             ('nico', 'Nico', '7a1'),
@@ -43,7 +43,7 @@ for user in cursor.fetchall():
 
 # inserindo jogos
 cursor.executemany(
-      'INSERT INTO jogoteca.jogo (nome, categoria, console) VALUES (%s, %s, %s)',
+      'INSERT INTO jogoteca.jogo (name, category, console) VALUES (%s, %s, %s)',
       [
             ('God of War 4', 'Acao', 'PS4'),
             ('NBA 2k18', 'Esporte', 'Xbox One'),

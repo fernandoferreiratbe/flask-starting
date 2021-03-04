@@ -1,43 +1,35 @@
 # _*_ encoding: utf-8 _*_
 
 from flask import Flask, render_template, request, redirect, session, flash, url_for
-
-
-class Game:
-
-    def __init__(self, name, category, console):
-        self.name = name
-        self.category = category
-        self.console = console
-
-    def __str__(self):
-        return f"Name -> {self.name} - " \
-               f"Category -> {self.category} - " \
-               f"Console -> {self.console}"
-
-
-class User:
-
-    def __init__(self, user_id, name, password):
-        self.user_id = user_id
-        self.name = name
-        self.password = password
-
+from flask_mysqldb import MySQL
+from dao import JogoDao
+from models import User, Game
 
 lewis = User('lewis', 'Lewis Hamilton', '444444')
 charles = User('charles', 'Charles Leclerc', '333333', )
 daniel = User('daniel', 'Daniel Ricciardo', '101010')
 
-users = {lewis.user_id: lewis, charles.user_id: charles, daniel.user_id: daniel}
+users = {lewis.id: lewis, charles.id: charles, daniel.id: daniel}
 
 page_title = "Games"
+
 game1 = Game('Super Mario', 'Action', 'SNT')
 game2 = Game('Pokemon Gold', 'RPG', 'GBA')
 games = [game1, game2]
 
 app = Flask(__name__)
+
 """ This is a sample web app. Never, never define secrete key in your source code... """
 app.secret_key = "xvZkad019002863kajdh3hflskjgadçjeubdk"
+
+app.config['MYSQL_HOST'] = "0.0.0.0"
+app.config['MYSQL_USER'] = "sample"
+app.config['MYSQL_PASSWORD'] = "123456"
+app.config['MYSQL_DB'] = "jogoteca"
+app.config['MYSQL_PORT'] = 3306
+
+db = MySQL(app=app)
+jogo_dao = JogoDao(db=db)
 
 
 @app.route('/')
@@ -59,7 +51,8 @@ def create_game():
     category = request.form['category']
     console = request.form['console']
 
-    games.append(Game(name, category, console))
+    # games.append(Game(name, category, console))
+    jogo_dao.salvar(jogo=Game(name, category, console))
 
     return redirect(url_for('index'))
 
@@ -76,7 +69,7 @@ def authenticate():
     if request.form['user'] in users:
         user = users[request.form['user']]
         if user.password == request.form['password']:
-            session['logged_user'] = user.user_id
+            session['logged_user'] = user.id
             flash(f'{user.name} logged successfully.')
             next_page = request.form['next_page']
 
