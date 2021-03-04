@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 from flask_mysqldb import MySQL
-from dao import JogoDao
+from dao import GameDao
 from models import User, Game
 
 lewis = User('lewis', 'Lewis Hamilton', '444444')
@@ -29,7 +29,7 @@ app.config['MYSQL_DB'] = "jogoteca"
 app.config['MYSQL_PORT'] = 3306
 
 db = MySQL(app=app)
-jogo_dao = JogoDao(db=db)
+game_dao = GameDao(db=db)
 
 
 @app.route('/')
@@ -51,8 +51,7 @@ def create_game():
     category = request.form['category']
     console = request.form['console']
 
-    # games.append(Game(name, category, console))
-    jogo_dao.salvar(jogo=Game(name, category, console))
+    game_dao.save(game=Game(name, category, console))
 
     return redirect(url_for('index'))
 
